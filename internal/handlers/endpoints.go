@@ -26,6 +26,11 @@ func (h *PayoutHandler) Get(c *fiber.Ctx) error {
 	return c.JSON(h.svc.Get(c.Context(), id))
 }
 
+func (h *PayoutHandler) List(c *fiber.Ctx) error {
+	merchantID := c.Query("merchant_id")
+	return c.JSON(h.svc.List(c.Context(), merchantID))
+}
+
 func (h *PayoutHandler) Cancel(c *fiber.Ctx) error {
 	id := c.Params("id")
 	return c.JSON(h.svc.Cancel(c.Context(), id))
