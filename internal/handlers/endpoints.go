@@ -35,3 +35,16 @@ func (h *PayoutHandler) Cancel(c *fiber.Ctx) error {
 	id := c.Params("id")
 	return c.JSON(h.svc.Cancel(c.Context(), id))
 }
+
+func (h *PayoutHandler) UpdateStatus(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var req dto.PayoutStatusUpdateRequest
+	if err := c.BodyParser(&req); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "invalid request body")
+	}
+	resp, err := h.svc.UpdateStatus(c.Context(), id, req.Status)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	return c.JSON(resp)
+}
