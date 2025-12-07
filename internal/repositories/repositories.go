@@ -88,3 +88,24 @@ func (r *PayoutRepository) ListByMerchant(ctx context.Context, merchantID string
 	}
 	return list, rows.Err()
 }
+
+// UpdateStatus updates the payout status and refreshed updated_at.
+func (r *PayoutRepository) UpdateStatus(ctx context.Context, id, status string) error {
+	query := `
+		UPDATE payouts
+		SET status = $2, updated_at = NOW()
+		WHERE id = $1
+	`
+	res, err := r.db.ExecContext(ctx, query, id, status)
+	if err != nil {
+		return err
+	}
+	affected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if affected == 0 {
+		return fmt.Errorf("payout not found")
+	}
+	return nil
+}

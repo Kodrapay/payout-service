@@ -18,3 +18,7 @@ type PayoutResponse struct {
 	Amount    int64  `json:"amount"`
 	Currency  string `json:"currency"`
 }
+
+type PayoutStatusUpdateRequest struct {
+	Status string `json:"status"`
+}

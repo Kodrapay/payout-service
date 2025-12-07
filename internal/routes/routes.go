@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/kodra-pay/payout-service/internal/handlers"
 	"github.com/kodra-pay/payout-service/internal/config"
+	"github.com/kodra-pay/payout-service/internal/handlers"
 	"github.com/kodra-pay/payout-service/internal/repositories"
 	"github.com/kodra-pay/payout-service/internal/services"
 )
@@ -23,4 +23,5 @@ func Register(app *fiber.App, serviceName string) {
 	app.Get("/payouts", handler.List)
 	app.Post("/payouts", handler.Create)
 	app.Get("/payouts/:id", handler.Get)
+	app.Put("/payouts/:id/status", handler.UpdateStatus)
 }
