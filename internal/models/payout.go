@@ -3,9 +3,9 @@ package models
 import "time"
 
 type Payout struct {
-	ID             string    `json:"id"`
-	MerchantID     string    `json:"merchant_id"`
-	Reference      string    `json:"reference"`
+	ID             int       `json:"id"`
+	MerchantID     int       `json:"merchant_id"`
+	Reference      int       `json:"reference"`
 	Amount         int64     `json:"amount"`
 	Currency       string    `json:"currency"`
 	RecipientName  string    `json:"recipient_name"`

@@ -1,8 +1,8 @@
 package dto
 
 type PayoutRequest struct {
-	MerchantID       string `json:"merchant_id"`
-	Reference        string `json:"reference"`
+	MerchantID       int    `json:"merchant_id"`
+	Reference        int    `json:"reference"`
 	Amount           int64  `json:"amount"`
 	Currency         string `json:"currency"`
 	RecipientName    string `json:"recipient_name"`
@@ -12,8 +12,8 @@ type PayoutRequest struct {
 }
 
 type PayoutResponse struct {
-	ID        string `json:"id"`
-	Reference string `json:"reference,omitempty"`
+	ID        int    `json:"id"`
+	Reference int    `json:"reference,omitempty"`
 	Status    string `json:"status"`
 	Amount    int64  `json:"amount"`
 	Currency  string `json:"currency"`

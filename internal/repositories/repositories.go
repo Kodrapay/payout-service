@@ -31,8 +31,8 @@ func NewPayoutRepository(dsn string) (*PayoutRepository, error) {
 
 func (r *PayoutRepository) Create(ctx context.Context, p *models.Payout) error {
 	query := `
-		INSERT INTO payouts (id, merchant_id, reference, amount, currency, recipient_name, recipient_account, recipient_bank, status, narration, created_at, updated_at)
-		VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), NOW())
+		INSERT INTO payouts (merchant_id, reference, amount, currency, recipient_name, recipient_account, recipient_bank, status, narration, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), NOW())
 		RETURNING id, created_at, updated_at
 	`
 	return r.db.QueryRowContext(ctx, query,
@@ -42,7 +42,7 @@ func (r *PayoutRepository) Create(ctx context.Context, p *models.Payout) error {
 	).Scan(&p.ID, &p.CreatedAt, &p.UpdatedAt)
 }
 
-func (r *PayoutRepository) GetByID(ctx context.Context, id string) (*models.Payout, error) {
+func (r *PayoutRepository) GetByID(ctx context.Context, id int) (*models.Payout, error) {
 	query := `
 		SELECT id, merchant_id, reference, amount, currency, recipient_name, recipient_account, recipient_bank, status, narration, created_at, updated_at
 		FROM payouts
@@ -60,7 +60,7 @@ func (r *PayoutRepository) GetByID(ctx context.Context, id string) (*models.Payo
 	return &p, err
 }
 
-func (r *PayoutRepository) ListByMerchant(ctx context.Context, merchantID string, limit int) ([]*models.Payout, error) {
+func (r *PayoutRepository) ListByMerchant(ctx context.Context, merchantID int, limit int) ([]*models.Payout, error) {
 	query := `
 		SELECT id, merchant_id, reference, amount, currency, recipient_name, recipient_account, recipient_bank, status, narration, created_at, updated_at
 		FROM payouts
@@ -90,7 +90,7 @@ func (r *PayoutRepository) ListByMerchant(ctx context.Context, merchantID string
 }
 
 // UpdateStatus updates the payout status and refreshed updated_at.
-func (r *PayoutRepository) UpdateStatus(ctx context.Context, id, status string) error {
+func (r *PayoutRepository) UpdateStatus(ctx context.Context, id int, status string) error {
 	query := `
 		UPDATE payouts
 		SET status = $2, updated_at = NOW()
