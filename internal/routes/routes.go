@@ -8,16 +8,15 @@ import (
 	"github.com/kodra-pay/payout-service/internal/services"
 )
 
-func Register(app *fiber.App, serviceName string) {
-	health := handlers.NewHealthHandler(serviceName)
+func Register(app *fiber.App, cfg config.Config) {
+	health := handlers.NewHealthHandler(cfg.ServiceName)
 	health.Register(app)
 
-	cfg := config.Load(serviceName, "7009")
 	repo, err := repositories.NewPayoutRepository(cfg.PostgresDSN)
 	if err != nil {
 		panic(err)
 	}
-	svc := services.NewPayoutService(repo)
+	svc := services.NewPayoutService(repo, cfg.MerchantServiceURL, cfg.TransactionServiceURL)
 	handler := handlers.NewPayoutHandler(svc)
 
 	app.Get("/payouts", handler.List)

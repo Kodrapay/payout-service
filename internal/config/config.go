@@ -6,9 +6,11 @@ import (
 )
 
 type Config struct {
-	ServiceName string
-	Port        string
-	PostgresDSN string
+	ServiceName        string
+	Port               string
+	PostgresDSN        string
+	MerchantServiceURL string
+	TransactionServiceURL string
 }
 
 func Load(serviceName, defaultPort string) Config {
@@ -22,9 +24,11 @@ func Load(serviceName, defaultPort string) Config {
 	}
 
 	return Config{
-		ServiceName: serviceName,
-		Port:        getEnv("PORT", defaultPort),
-		PostgresDSN: dsn,
+		ServiceName:            serviceName,
+		Port:                   getEnv("PORT", defaultPort),
+		PostgresDSN:            dsn,
+		MerchantServiceURL:     getEnv("MERCHANT_SERVICE_URL", "http://merchant-service:7002"),
+		TransactionServiceURL:  getEnv("TRANSACTION_SERVICE_URL", "http://transaction-service:7004"),
 	}
 }
 
