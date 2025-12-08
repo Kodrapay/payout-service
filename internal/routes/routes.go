@@ -16,7 +16,7 @@ func Register(app *fiber.App, cfg config.Config) {
 	if err != nil {
 		panic(err)
 	}
-	svc := services.NewPayoutService(repo, cfg.MerchantServiceURL)
+	svc := services.NewPayoutService(repo, cfg.MerchantServiceURL, cfg.TransactionServiceURL)
 	handler := handlers.NewPayoutHandler(svc)
 
 	app.Get("/payouts", handler.List)
